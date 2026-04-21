@@ -1,0 +1,5 @@
+21 APR
+
+- Struttura File/ Cartelle
+- Add Gitignore
+- iniziato maze.py + funzioni utili per il generatore
