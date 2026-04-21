@@ -3,3 +3,4 @@
 - Struttura File/ Cartelle
 - Add Gitignore
 - iniziato maze.py + funzioni utili per il generatore
+- iniziato parsing, da controllare se funziona
