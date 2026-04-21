@@ -6,7 +6,7 @@ EXIT=
 OUTPUT_FILE=
 PERFECT=
 SEED=
-///
+/// Non sapevo a cosa servisse, non so se lo sapessi, nel caso te l'ho incollato
  Il progetto genera labirinti. SEED in config.txt servirebbe come seme per il generatore di numeri casuali.                                
                                                                                                                                             
   In pratica:                                                                                                                               
