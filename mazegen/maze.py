@@ -28,4 +28,19 @@ class Maze:
 #   - S = bit 2                                               
 #   - W = bit 3
              
-#   Quindi per sapere se la parete Nord è chiusa, devi controllare se il bit 0 è a 1.         
+#  0  = nessuna parete                                                          
+#   1  = N          ↑                                                            
+#   2  = E            →                                         
+#   3  = N+E        ↑ →
+#   4  = S              ↓                                                        
+#   5  = N+S        ↑   ↓
+#   6  = E+S          → ↓                                                        
+#   7  = N+E+S      ↑ → ↓                                                        
+#   8  = W          ←
+#   9  = N+W        ↑ ←                                                          
+#   10 = E+W          → ←
+#   11 = N+E+W      ↑ → ←                                                        
+#   12 = S+W          ↓ ←                                                        
+#   13 = N+S+W      ↑ ↓ ←
+#   14 = E+S+W        → ↓ ←                                                      
+#   15 = N+E+S+W    ↑ → ↓ ←  
