@@ -1,0 +1,4 @@
+Your program must handle all errors gracefully: invalid configuration, file not found, bad
+syntax, impossible maze parameters, etc. It must never crash unexpectedly, and must
+always provide a clear error message to the user
+TODO: Funzione per leggere i dati dal txt / Funzione per validarli
