@@ -1,6 +1,6 @@
 import sys
-
 from config import ConfigError, parse_config
+from mazegen import Maze
 
 def main():
 	if len(sys.argv) != 2:
@@ -12,6 +12,8 @@ def main():
 	except ConfigError as e:
 		print(f"Error: {e}")
 		sys.exit(1)
+
+	maze = Maze(cfg.width, cfg.height, cfg.height, cfg.entry, cfg.exit_)
 	#TODO andare a generare il labirinto
 
 if __name__ == "__main__":
