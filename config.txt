@@ -1,11 +1,17 @@
 /TODO Funzione per leggere i dati dal txt / Funzione per validarli
-WIDTH=
-HEIGHT=
-ENTRY=
-EXIT=
-OUTPUT_FILE=
-PERFECT=
+
+# mandatory (example)
+WIDTH=20
+HEIGHT=15
+ENTRY=0,0
+EXIT=19,14
+OUTPUT_FILE=maze.txt
+PERFECT=True
+
+# optional
 SEED=
+ALGORITHM=
+DISPLAY_MODE=
 /// Non sapevo a cosa servisse, non so se lo sapessi, nel caso te l'ho incollato
 
  Il progetto genera labirinti. SEED in config.txt servirebbe come seme per il generatore di numeri casuali.                                
