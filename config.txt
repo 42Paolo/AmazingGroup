@@ -2,3 +2,9 @@ Your program must handle all errors gracefully: invalid configuration, file not 
 syntax, impossible maze parameters, etc. It must never crash unexpectedly, and must
 always provide a clear error message to the user
 TODO: Funzione per leggere i dati dal txt / Funzione per validarli
+WIDTH
+HEIGHT
+ENTRY
+EXIT
+OUTPUT_FILE
+PERFECT
