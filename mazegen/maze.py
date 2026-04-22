@@ -19,7 +19,7 @@ class Maze:
 		self.entry = entry
 		self.exit_ = exit_
 		self.grid: list[list[int]] = [[15] * width for _ in range(height)]
-		self.blocked: set[tuple[int, int]] = set() #questo mi serve per il 42
+		self.blocked: set[tuple[int, int]] = set() #questo mi serve per il disegno del 42
 
 	def has_wall(self, x: int, y: int, direction: int) -> bool:
 		return bool(self.grid[y][x] & direction)
@@ -48,3 +48,9 @@ class Maze:
 			for nx, ny, d, opp in directions
 			if self.in_bounds(nx, ny) and not self.is_blocked(nx, ny)
 		]
+	#Per il 42 centrale
+	def get_center(self) -> tuple[int, int]:                                                        
+	  return self.width // 2, self.height // 2  
+	#cx, cy = maze_get_centre
+
+		

@@ -15,6 +15,7 @@ def main():
 
 	maze = Maze(cfg.width, cfg.height, cfg.entry, cfg.exit_)
 	#TODO andare a generare il labirinto
-
+	#TODO controllare che le dimensioni siano > height/width rispetto alla raffigurazione del 42
+	#non so, si potrebbe fare anche nel checker
 if __name__ == "__main__":
 	main()
