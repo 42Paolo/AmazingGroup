@@ -13,7 +13,7 @@ def main():
 		print(f"Error: {e}")
 		sys.exit(1)
 
-	maze = Maze(cfg.width, cfg.height, cfg.height, cfg.entry, cfg.exit_)
+	maze = Maze(cfg.width, cfg.height, cfg.entry, cfg.exit_)
 	#TODO andare a generare il labirinto
 
 if __name__ == "__main__":
