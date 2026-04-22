@@ -23,6 +23,8 @@ Parametri opzionali:
 python a_maze_ing.py config.txt
 ```
 
+# Code Structure
+
 ## Parsing della configurazione
 
 Il primo passo è leggere e validare i valori presenti in `config.txt`, per poi passarli alla classe `Maze` e stabilire le fondamenta del labirinto. Questo viene gestito dalla funzione `parse_config(path)`, definita in `config.py`, che legge il file, valida ogni parametro e restituisce un oggetto `MazeConfig` pronto all'uso.
