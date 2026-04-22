@@ -5,22 +5,18 @@ class Maze:
 			self.entry = entry
 			self.exit_ = exit_
 			self.grid = [[0] * width for _ in range(height)]
-	
-	def has_wall(x, y, direction):
-		pass
+	#BITWISE OPERATION
+	def has_wall(self, x, y, direction):
+		return bool(self.grid[y][x] & direction)
 
-	def open_wall(x, y, direction):
-		pass
+	def open_wall(self, x, y, direction):
+		self.grid[y][x] &= ~direction
 
-	def close_wall(x, y, direction):
-		pass
+	def close_wall(self, x, y, direction):
+		self.grid[y][x] |= direction
 
-	def in_bounds(x, y):
-		pass
-
-
-# 	Perfetto. Prova a scrivere has_wall per primo — è il più semplice e gli altri si basano su di   
-#   esso.                                                                                           
+	def in_bounds(self, x, y):
+		return 0 <= x < self.width and 0 <= y < self.height
                                                                                                   
 #   Ricorda che ogni cella è un intero, e le direzioni corrispondono a bit:                         
 #   - N = bit 0
