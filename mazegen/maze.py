@@ -17,7 +17,10 @@ class Maze:
 
 	def in_bounds(self, x, y):
 		return 0 <= x < self.width and 0 <= y < self.height
-                                                                                                  
+
+	
+
+
 #   Ricorda che ogni cella è un intero, e le direzioni corrispondono a bit:                         
 #   - N = bit 0
 #   - E = bit 1                                                                                     

@@ -12,17 +12,3 @@ PERFECT=True
 SEED=
 ALGORITHM=
 DISPLAY_MODE=
-/// Non sapevo a cosa servisse, non so se lo sapessi, nel caso te l'ho incollato
-
- Il progetto genera labirinti. SEED in config.txt servirebbe come seme per il generatore di numeri casuali.                                
-                                                                                                                                            
-  In pratica:                                                                                                                               
-  - La generazione di un labirinto usa algoritmi che fanno scelte casuali (quali muri abbattere, quale percorso seguire, ecc.)              
-  - Con lo stesso SEED ottieni sempre lo stesso labirinto — riproducibilità garantita                                                       
-  - Senza SEED (o con uno diverso) ogni esecuzione produce un labirinto diverso                                                             
-                                                                                                                                            
-  Casi d'uso concreti:                                                                                                                      
-  - Testing/debug — puoi rieseguire il programma sullo stesso labirinto per verificare che l'output sia identico                            
-  - Condivisione — basta condividere i parametri + il seed per ricreare esattamente lo stesso labirinto                                     
-  - Valutazione — il professore/tester può usare un seed fisso per confrontare i risultati di tutti    
-                                                                                                                                            
