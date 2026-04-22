@@ -5,7 +5,8 @@ version = "1.0.0"
 description = "Reusable maze generator module"
 requires-python = ">=3.10"
 dependencies = [
-    "python-dotenv"
+    "python-dotenv",
+    "pygame",
 ]
 
 [build-system]
