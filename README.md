@@ -42,3 +42,31 @@ I metodi disponibili della classe sono:
 - `neighbors(x, y)` → restituisce le celle (W,A,S,D) valide, ognuna con le direzioni da usare per aprire il muro condiviso
 
 Questi metodi sono le fondamenta sul quale l'algoritmo di generazione si appoggia.
+
+## Come funzionano le celle
+
+Non esiste una classe `Cell`: ogni cella è semplicemente un **intero da 0 a 15** dentro `grid[y][x]`.
+
+I 4 bit di quell'intero rappresentano i muri nelle quattro direzioni:
+
+```
+bit 0 (valore 1)  →  W = muro Nord  ↑
+bit 1 (valore 2)  →  D = muro Est   →
+bit 2 (valore 4)  →  S = muro Sud   ↓
+bit 3 (valore 8)  →  A = muro Ovest ←
+```
+
+All'inizio ogni cella vale `15` (tutti i bit a 1), cioè **tutti i muri chiusi**:
+
+```
+15 = 0b1111  →  Nord | Est | Sud | Ovest
+```
+
+Quando l'algoritmo abbatte un muro tra due celle, azzera il bit corrispondente in entrambe le celle. Esempio: aprire il muro Est della cella `(x, y)`:
+
+```python
+grid[y][x]   &= ~D   # azzera bit 1 in (x, y)    → rimuove muro Est
+grid[y][x+1] &= ~A   # azzera bit 3 in (x+1, y)  → rimuove muro Ovest del vicino
+```
+
+Una cella con valore `6` (`0b0110`) ha i muri Est e Sud chiusi, Nord e Ovest aperti. Leggere un intero basta per sapere tutto lo stato di una cella, per questo non serve una classe dedicata.
