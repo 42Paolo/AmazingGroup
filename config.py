@@ -10,7 +10,7 @@ class ConfigError(Exception):
     """raises when configuration file is invalid"""
     pass
 
-
+# potrei usare pydantic (base model)
 @dataclass
 class MazeConfig:
     """Data container for maze generation parameters."""
@@ -53,7 +53,7 @@ def validate_int(value: str, key:str) -> int:
         result = int(value)
     except ValueError:
         raise ConfigError(f"{key} must be an integer, got {value}")
-    
+
     if result <= 0:
         raise ConfigError(f"{key} must be positive, got {result}")
     return result
@@ -152,7 +152,12 @@ def parse_config(path: str) -> MazeConfig:
     )
 
 # DEBUG
-cfg = parse_config("config.txt")
-print(cfg)
+try:
+    cfg = parse_config("config.txt")
+    print(cfg)
+
+except ConfigError as e:
+    print(f"[CONFIG ERROR] {e}")
+    exit(1)
 
 # DOVREBBE FUNZIONARE
