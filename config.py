@@ -29,13 +29,22 @@ REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
 
 def load_config(path: str) -> dict[str, str]:
     """""Legge il file config e ritorna un dizionario grezzo KEY->VALUE."""
-    if not os.path.exists(path):
-        raise ConfigError(f"Config file not found")
-    try:
-        raw = dotenv_values(path)
-    except Exception as exc:
-        raise ConfigError(f"Can't read config file '{path}': {exc}") from exc
-    return dict(raw)
+    # if not os.path.exists(path):
+    #     raise ConfigError(f"Config file not found")
+    # try:
+    #     raw = dotenv_values(path)
+    # except Exception as exc:
+    #     raise ConfigError(f"Can't read config file '{path}': {exc}") from exc
+    # return dict(raw)
+    raw = {}
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            key, value = line.split("=", 1)
+            raw[key.strip()] = value.strip()
+    return raw
 
 
 def validate_int(value: str, key:str) -> int:
@@ -126,7 +135,7 @@ def parse_config(path: str) -> MazeConfig:
 
     # optional
     seed: Optional[int] = None
-    if "SEED" in raw:
+    if raw.get("SEED"):
         seed = validate_int(raw["SEED"], "SEED")
 
     algorithm: Optional[str] = raw.get("ALGORITHM")
@@ -141,3 +150,9 @@ def parse_config(path: str) -> MazeConfig:
         seed=seed,
         algorithm=algorithm,
     )
+
+# DEBUG
+cfg = parse_config("config.txt")
+print(cfg)
+
+# DOVREBBE FUNZIONARE
