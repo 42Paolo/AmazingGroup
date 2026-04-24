@@ -1,30 +1,55 @@
 # parsing di config.txt, validazione parametri, gestione errori
 
-from dotenv import dotenv_values
-from dataclasses import dataclass, field
 from typing import Optional
-import os
+from enum import Enum
+from typing_extensions import Self
+from pydantic import BaseModel, Field, model_validator
 
 
 class ConfigError(Exception):
     """raises when configuration file is invalid"""
     pass
 
-# potrei usare pydantic (base model)
-@dataclass
-class MazeConfig:
+
+class Algorithm(Enum):
+    dfs = "dfs"
+    recursive_backtracker = "recursive_backtracker"
+    prim = "prim"
+    kruskal = "kruskal"
+
+
+class MazeConfig(BaseModel):
     """Data container for maze generation parameters."""
-    width: int
-    height: int
+    width: int = Field(..., gt=0)
+    height: int = Field(..., gt=0)
     entry: tuple[int, int]
     exit_: tuple[int, int]
-    output_file: str
+    output_file: str = Field(..., min_length=1)
     perfect: bool
-    seed: Optional[int] = None
-    algorithm: Optional[str] = None
+    seed: Optional[int] = Field(default=None, gt=0)
+    algorithm: Optional[Algorithm] = None
 
+    @model_validator(mode='after')
+    def validate_maze(self) -> Self:
+        # ENTRY e EXIT devono essere dentro i bounds
+        if self.entry[0] >= self.width or self.entry[1] >= self.height:
+            raise ConfigError(
+                f"ENTRY {self.entry} is outside maze bounds "
+                f"({self.width}x{self.height})"
+            )
+        if self.exit_[0] >= self.width or self.exit_[1] >= self.height:
+            raise ConfigError(
+                f"EXIT {self.exit_} is outside maze bounds "
+                f"({self.width}x{self.height})"
+            )
 
-REQUIRED_KEYS = {"WIDTH", "HEIGHT", "ENTRY", "EXIT", "OUTPUT_FILE", "PERFECT"}
+        # ENTRY e EXIT devono essere celle diverse
+        if self.entry == self.exit_:
+            raise ConfigError(
+                f"ENTRY and EXIT must be different, both are {self.entry}"
+            )
+
+        return self
 
 
 def load_config(path: str) -> dict[str, str]:
@@ -47,109 +72,44 @@ def load_config(path: str) -> dict[str, str]:
     return raw
 
 
-def validate_int(value: str, key:str) -> int:
-    """Valida WIDTH e HEIGHT: interi strettamente positivi."""
-    try:
-        result = int(value)
-    except ValueError:
-        raise ConfigError(f"{key} must be an integer, got {value}")
-
-    if result <= 0:
-        raise ConfigError(f"{key} must be positive, got {result}")
-    return result
-
-
-def validate_coord(value: str, key:str) -> tuple[int, int]:
-    """Valida ENTRY e EXIT: coppia di interi non negativi in formato 'x,y'."""
-    parts = value.split(",")
-
-    if len(parts) != 2:
-        raise ConfigError(f"{key} must be in 'x,y' format, got {value}")
-
-    try:
-        x, y = int(parts[0]), int(parts[1])
-    except ValueError:
-        raise ConfigError(f"{key} coordinates must be integers, got {value}")
-    
-    if x < 0 or y < 0:
-        raise ConfigError(f"{key} coordinates must be positive, got {x}, {y}")
-    return x, y
-
-
-def validate_bool(value: str, key:str) -> bool:
-    """Valida PERFECT: deve essere 'True' o 'False' (case-insensitive)."""
+def parse_bool(value: str, key: str) -> bool:
+    """Valida PERFECT: accetta solo 'true' o 'false' (case-insensitive)."""
     if value.lower() == "true":
         return True
     if value.lower() == "false":
         return False
-    raise ConfigError(f"'{key}' mus be 'True'/'False', got {value}")
+    raise ConfigError(f"'{key}' must be 'True' or 'False', got '{value}'")
 
 
-def validate_output_file(value: str) -> str:
-    """Valida OUTPUT_FILE: non deve essere vuoto."""
-    if not value or not value.strip():
-        raise ConfigError("'OUTPUT_FILE' must not be empty")
-    return value.strip()
-
-
-def validate_bounds(entry, exit_, width, height) -> None:
-    """Controlla che ENTRY ed EXIT siano dentro i bounds del labirinto."""
-    if entry[0] >= width or entry[1] >= height:
-        raise ConfigError(
-            f"ENTRY {entry} is outside maze bounds ({width}x{height})."
-        )
-    if exit_[0] >= width or exit_[1] >= height:
-        raise ConfigError(
-            f"EXIT {exit_} is outside maze bounds ({width}x{height})."
-        )
-
-
-def validate_entry_exit(entry, exit_) -> None:
-    """Controlla che ENTRY e EXIT siano celle diverse."""
-    if entry == exit_:
-        raise ConfigError(f"ENTRY and EXIT must be different, both are {entry}")
-
-
-# chiama tutto quanto sopra
 def parse_config(path: str) -> MazeConfig:
     """Legge, valida e ritorna la configurazione del labirinto."""
-    
-    raw = load_config(path)  # dizionario grezzo
+    raw = load_config(path)
 
-    missing = REQUIRED_KEYS - raw.keys()
-    if missing:
-        raise ConfigError(
-            f"Missing mandatory key(s): {missing}"
+    def parse_coord(value: str, key: str) -> tuple[int, int]:
+        parts = value.split(",")
+        if len(parts) != 2:
+            raise ConfigError(f"{key} must be in 'x,y' format, got {value}")
+        try:
+            return int(parts[0]), int(parts[1])
+        except ValueError:
+            raise ConfigError(f"{key} coordinates must be integers, got {value}")
+
+    try:
+        return MazeConfig(
+            width=int(raw["WIDTH"]),
+            height=int(raw["HEIGHT"]),
+            entry=parse_coord(raw["ENTRY"], "ENTRY"),
+            exit_=parse_coord(raw["EXIT"], "EXIT"),
+            output_file=raw["OUTPUT_FILE"],
+            perfect=parse_bool(raw["PERFECT"], "PERFECT"),  # validazione strict
+            seed=int(raw["SEED"]) if raw.get("SEED") else None,
+            algorithm=raw.get("ALGORITHM"),
         )
-    
-    # valido i valori
-    width = validate_int(raw["WIDTH"], "WIDTH")
-    height = validate_int(raw["HEIGHT"], "HEIGHT")
-    entry = validate_coord(raw["ENTRY"], "ENTRY")
-    exit_ = validate_coord(raw["EXIT"], "EXIT")
-    output_file = validate_output_file(raw["OUTPUT_FILE"])
-    perfect = validate_bool(raw["PERFECT"], "PERFECT")
+    except ConfigError:
+        raise  # rilancia ConfigError senza wrappare
+    except Exception as e:
+        raise ConfigError(f"Configuration error: {e}") from e
 
-    validate_bounds(entry, exit_, width, height)
-    validate_entry_exit(entry, exit_)
-
-    # optional
-    seed: Optional[int] = None
-    if raw.get("SEED"):
-        seed = validate_int(raw["SEED"], "SEED")
-
-    algorithm: Optional[str] = raw.get("ALGORITHM")
-
-    return MazeConfig(
-        width=width,
-        height=height,
-        entry=entry,
-        exit_=exit_,
-        output_file=output_file,
-        perfect=perfect,
-        seed=seed,
-        algorithm=algorithm,
-    )
 
 # DEBUG
 try:
