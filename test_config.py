@@ -1,5 +1,5 @@
 import pytest
-from config import parse_config, ConfigError
+from config import parse_config, ConfigError, Algorithm
 
 
 # -------------------------
@@ -27,7 +27,7 @@ ALGORITHM=dfs
     assert cfg.output_file == "maze.txt"
     assert cfg.perfect is True
     assert cfg.seed == 42
-    assert cfg.algorithm == "dfs"
+    assert cfg.algorithm == Algorithm.dfs
 
 
 # -------------------------
