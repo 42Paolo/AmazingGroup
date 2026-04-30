@@ -1,15 +1,16 @@
-import pygame
+import pygame  # ho scoperto che non si puo' usare pygame
+from config import MazeConfig
 # importare il MazeGenerator
 
 
-class FakeMaze:
-    def __init__(self) -> None:
-        self.width = 30
-        self.height = 30
-        self.entry = (0, 0)
-        self.exit_ = (9, 9)
-        # ogni cella vale 15 = tutti i muri chiusi (0b1111)
-        self.grid = [[15] * self.width for _ in range(self.height)]
+# class FakeMaze:
+#     def __init__(self) -> None:
+#         self.width = 30
+#         self.height = 30
+#         self.entry = (0, 0)
+#         self.exit_ = (9, 9)
+#         # ogni cella vale 15 = tutti i muri chiusi (0b1111)
+#         self.grid = [[15] * self.width for _ in range(self.height)]
         
 
 
@@ -23,7 +24,7 @@ SOUTH = 4
 WEST  = 8
 
 
-def draw_maze(surface: pygame.Surface, maze: FakeMaze) -> None:
+def draw_maze(surface: pygame.Surface, maze: MazeConfig) -> None:
     """Disegna il labirinto sulla surface pygame.
 
     Args:
@@ -66,7 +67,7 @@ def draw_maze(surface: pygame.Surface, maze: FakeMaze) -> None:
 
 
 
-def run_maze(maze: FakeMaze):
+def run_maze(maze: MazeConfig):
     """Avvia la finestra pygame e disegna il labirinto.
 
     Args:
@@ -97,5 +98,5 @@ def run_maze(maze: FakeMaze):
 
 
 
-maze = FakeMaze()
+maze = MazeConfig()
 run_maze(maze)
