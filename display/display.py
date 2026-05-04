@@ -18,7 +18,7 @@ CELL_COLOR = (200, 200, 200)  # cella libera
 
 
 COLOR_THEMES = [
-    {   # tema 0: classico (come screenshot)
+    {   # tema 0: classico
         "bg":      (0,   0,   0),
         "cell":    (200, 200, 200),
         "entry":   (180,  0, 180),
@@ -62,22 +62,22 @@ def validate_walls(maze) -> bool:
 
 def _px(r: int, g: int, b: int) -> str:
     """Restituisce una coppia di spazi con background ANSI truecolor.
- 
+
     Args:
         r, g, b: componenti RGB del colore.
- 
+
     Returns:
         Stringa di 2 caratteri colorati + reset.
     """
     return f"\033[48;2;{r};{g};{b}m  {RESET}"
- 
+
 
 def render_maze(maze, theme_idx: int = 0) -> str:
     """Converte maze.grid in una stringa ANSI pronta per print().
- 
+
     Args:
         maze: oggetto con width, height, grid (lista di liste di int).
- 
+
     Returns:
         Stringa multi-riga con escape ANSI truecolor.
     """
@@ -86,22 +86,22 @@ def render_maze(maze, theme_idx: int = 0) -> str:
     cell = _px(*theme["cell"])
     entry = _px(*theme["entry"])
     exit_ = _px(*theme["exit"])
- 
+
     lines = []
- 
+
     for y in range(maze.height):
         """ogni riga di celle del labirinto occupa 2 righe di testo nel terminale."""
 
         row_a = ""  # angolo/muro NORTH  → larghezza: width*2 + 1 pixel
         row_b = ""  # muro WEST + cella  → larghezza: width*2 + 1 pixel
- 
+
         for x in range(maze.width):
             c = maze.grid[y][x]
- 
+
             # riga A: angolo (sempre muro) + muro NORTH o passaggio
             row_a += wall
             row_a += wall if (c & NORTH) else cell
- 
+
             # riga B: muro WEST o passaggio + contenuto cella
             row_b += wall if (c & WEST) else cell
             if maze.entry == (x, y):
@@ -110,15 +110,15 @@ def render_maze(maze, theme_idx: int = 0) -> str:
                 row_b += exit_
             else:
                 row_b += cell
- 
+
         # pixel finale a destra
         row_a += wall
         last = maze.grid[y][maze.width - 1]
         row_b += wall if (last & EAST) else cell
- 
+
         lines.append(row_a)
         lines.append(row_b)
- 
+
     # riga finale: chiude i muri SOUTH dell'ultima fila
     row_c = ""
     for x in range(maze.width):
@@ -128,9 +128,9 @@ def render_maze(maze, theme_idx: int = 0) -> str:
     row_c += wall
 
     lines.append(row_c)
- 
+
     return "\n".join(lines)
- 
+
 
 def handle_input(maze, theme_idx: int) -> tuple[bool, int]:
     print("\n[1] Rigenera labirinto")
@@ -170,15 +170,15 @@ def handle_input(maze, theme_idx: int) -> tuple[bool, int]:
 
 if __name__ == "__main__":
     import os
- 
+
     class FakeMaze:
         """5×4 con corridoio orizzontale sulla riga 0 e verticale sulla colonna 0."""
- 
+
         # def __init__(self) -> None:
         #     self.width  = 5
         #     self.height = 4
         #     self.grid   = [[15] * self.width for _ in range(self.height)]
- 
+
 
         def __init__(self) -> None:
             self.width = 10
@@ -187,7 +187,7 @@ if __name__ == "__main__":
             self.exit_ = (9, 9)
             # ogni cella vale 15 = tutti i muri chiusi (0b1111)
             self.grid = [[15] * self.width for _ in range(self.height)]
- 
+
             for x in range(self.width - 1):
                 self.grid[0][x]   &= ~EAST
                 self.grid[0][x+1] &= ~WEST
