@@ -131,7 +131,43 @@ def render_maze(maze, theme_idx: int = 0) -> str:
  
     return "\n".join(lines)
  
- 
+
+def handle_input(maze, theme_idx: int) -> tuple[bool, int]:
+    print("\n[1] Rigenera labirinto")
+    print("[2] Mostra/Nascondi percorso")
+    print("[3] Cambia colore muri")
+    print("[4] Esci")
+    
+    choice = input("\nScelta: ").strip().lower()
+
+    if choice == "1":
+        maze.regenerate()
+        os.system("clear")
+        print(render_maze(maze, theme_idx=theme_idx))
+    elif choice == "2":
+        maze.toggle_path()  # da fare
+        print(render_maze(maze, theme_idx=theme_idx))
+
+    elif choice == '3':
+        print(f"Available themes: 0 - {len(COLOR_THEMES) - 1}")
+        try:
+            new_theme = int(input("Select new theme: "))
+            if 0 <= new_theme < len(COLOR_THEMES):
+                theme_idx = new_theme
+                print(render_maze(maze, theme_idx=theme_idx))
+            else:
+                print("Invalid theme index.")
+        except ValueError:
+            raise ValueError("Invalid input: expected an integer.")
+
+    elif choice == "4":
+        print("BYE!")
+        return False, theme_idx
+    else:
+        print("Invalid choice")
+    return True, theme_idx
+
+
 if __name__ == "__main__":
     import os
  
@@ -159,6 +195,19 @@ if __name__ == "__main__":
                 self.grid[yy][0]   &= ~SOUTH
                 self.grid[yy+1][0] &= ~NORTH
 
+        def regenerate(self) -> None:
+            self.__init__()
+
+        def toggle_path(self) -> None:
+            pass
+
+        
     os.system("clear")
-    print(render_maze(FakeMaze(), theme_idx=2))
+    maze = FakeMaze()
+    current_theme = 2
+    print(render_maze(maze, theme_idx=current_theme))
+
+    running = True
+    while running:
+        running, current_theme = handle_input(maze, current_theme)
 
