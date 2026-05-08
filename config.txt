@@ -1,9 +1,12 @@
-WIDTH=20
+# caooioaijsiuhgpaifhgidsfh
+WIDTH 10
 HEIGHT=15
 ENTRY=0,0
 EXIT=19,14
 OUTPUT_FILE=maze.txt
 PERFECT=True
-
 SEED=42
 ALGORITHM=prim
+
+#da sistemare se non ha "="
+#da sistemare se manca "=..."
