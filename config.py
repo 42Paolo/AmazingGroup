@@ -15,7 +15,6 @@ class Algorithm(Enum):
     dfs = "dfs"
     recursive_backtracker = "recursive_backtracker"
     prim = "prim"
-    kruskal = "kruskal"
 
 
 class MazeConfig(BaseModel):
@@ -53,14 +52,6 @@ class MazeConfig(BaseModel):
 
 
 def load_config(path: str) -> dict[str, str]:
-    """""Legge il file config e ritorna un dizionario grezzo KEY->VALUE."""
-    # if not os.path.exists(path):
-    #     raise ConfigError(f"Config file not found")
-    # try:
-    #     raw = dotenv_values(path)
-    # except Exception as exc:
-    #     raise ConfigError(f"Can't read config file '{path}': {exc}") from exc
-    # return dict(raw)
     raw = {}
     with open(path) as f:
         for line in f:
@@ -73,7 +64,6 @@ def load_config(path: str) -> dict[str, str]:
 
 
 def parse_bool(value: str, key: str) -> bool:
-    """Valida PERFECT: accetta solo 'true' o 'false' (case-insensitive)."""
     if value.lower() == "true":
         return True
     if value.lower() == "false":
@@ -82,7 +72,6 @@ def parse_bool(value: str, key: str) -> bool:
 
 
 def parse_config(path: str) -> MazeConfig:
-    """Legge, valida e ritorna la configurazione del labirinto."""
     raw = load_config(path)
 
     def parse_coord(value: str, key: str) -> tuple[int, int]:
@@ -101,7 +90,7 @@ def parse_config(path: str) -> MazeConfig:
             entry=parse_coord(raw["ENTRY"], "ENTRY"),
             exit_=parse_coord(raw["EXIT"], "EXIT"),
             output_file=raw["OUTPUT_FILE"],
-            perfect=parse_bool(raw["PERFECT"], "PERFECT"),  # validazione strict
+            perfect=parse_bool(raw["PERFECT"], "PERFECT"),
             seed=int(raw["SEED"]) if raw.get("SEED") else None,
             algorithm=raw.get("ALGORITHM"),
         )
@@ -111,13 +100,3 @@ def parse_config(path: str) -> MazeConfig:
         raise ConfigError(f"Configuration error: {e}") from e
 
 
-# DEBUG
-try:
-    cfg = parse_config("config.txt")
-    print(cfg)
-
-except ConfigError as e:
-    print(f"[CONFIG ERROR] {e}")
-    exit(1)
-
-# DOVREBBE FUNZIONARE

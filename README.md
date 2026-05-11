@@ -70,3 +70,6 @@ grid[y][x+1] &= ~A   # azzera bit 3 in (x+1, y)  → rimuove muro Ovest del vici
 ```
 
 Una cella con valore `6` (`0b0110`) ha i muri Est e Sud chiusi, Nord e Ovest aperti. Leggere un intero basta per sapere tutto lo stato di una cella, per questo non serve una classe dedicata.
+
+## Maze Generator
+

@@ -21,6 +21,7 @@ class Maze:
 		self.grid: list[list[int]] = [[15] * width for _ in range(height)]
 		self.blocked: set[tuple[int, int]] = set() #questo mi serve per il disegno del 42
 
+	#tutte funzioni secodnarie per controlli, mi servivano per i controlli sulle celle, senno il codice e ra inleggibile/non chiaro
 	def has_wall(self, x: int, y: int, direction: int) -> bool:
 		return bool(self.grid[y][x] & direction)
 
@@ -36,6 +37,8 @@ class Maze:
 	def is_blocked(self, x: int, y: int) -> bool:
 		return (x, y) in self.blocked
 
+	#mi serve per dfs cosicche quando va a generare il percorso a ogni iterazione sapra le celle vicine "raggiungibili"
+	# e di conseguenza capira quale cella andare ad abbattere
 	def neighbors(self, x: int, y: int) -> list[tuple[int, int, int, int]]:
 		directions = [
 			(x,     y - 1, W, S), 
@@ -48,9 +51,9 @@ class Maze:
 			for nx, ny, d, opp in directions
 			if self.in_bounds(nx, ny) and not self.is_blocked(nx, ny)
 		]
-	#Per il 42 centrale
+
 	def get_center(self) -> tuple[int, int]:                                                        
 	  return self.width // 2, self.height // 2  
-	#cx, cy = maze_get_centre
+	
 
 		

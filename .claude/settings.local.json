@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(pip install *)",
+      "Bash(pip3 install *)",
+      "Bash(git -C \"/Users/hurasmi/Documents/Documents - Paolo's MacBook Air/CODE/AmazingGroup\" rev-parse --show-toplevel)",
+      "Bash(git *)"
+    ]
+  }
+}
