@@ -4,11 +4,18 @@ from typing import Optional
 from enum import Enum
 from typing_extensions import Self
 from pydantic import BaseModel, Field, model_validator
+from graphic import themes
 
 
+# class ConfigError(Exception):
+#     """raises when configuration file is invalid"""
+#     pass
 class ConfigError(Exception):
-    """raises when configuration file is invalid"""
-    pass
+    # RED = "\033[91m"
+    # RESET = "\033[0m"
+
+    def __str__(self):
+        return f"{themes.RED}{super().__str__()}{themes.RESET}"
 
 
 class Algorithm(Enum):
@@ -58,7 +65,10 @@ def load_config(path: str) -> dict[str, str]:
             line = line.strip()
             if not line or line.startswith("#"):
                 continue
-            key, value = line.split("=", 1)
+            try:
+                key, value = line.split("=", 1)
+            except ValueError:
+                raise ConfigError(f"Invalid line format: {line}")
             raw[key.strip()] = value.strip()
     return raw
 
@@ -96,7 +106,5 @@ def parse_config(path: str) -> MazeConfig:
         )
     except ConfigError:
         raise  # rilancia ConfigError senza wrappare
-    except Exception as e:
+    except (KeyError, ValueError) as e:
         raise ConfigError(f"Configuration error: {e}") from e
-
-
