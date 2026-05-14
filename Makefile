@@ -1,4 +1,5 @@
-#fatto fare a claude per testare
+PYTHON=python3
+
 
 .PHONY: install run debug clean lint lint-strict
 
@@ -6,10 +7,10 @@ install:
 	pip install -e .
 
 run:
-	python3 a_maze_ing.py config.txt
+	$(PYTHON) a_maze_ing.py config.txt
 
 debug:
-	python3 -m pdb a_maze_ing.py config.txt
+	$(PYTHON) -m pdb a_maze_ing.py config.txt
 
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null; true
