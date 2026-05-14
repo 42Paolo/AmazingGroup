@@ -11,7 +11,7 @@ def _px(r: int, g: int, b: int) -> str:
     return f"\033[48;2;{r};{g};{b}m  {RESET}"
 
 
-def _path_to_cells(maze, path: list[str]) -> set[tuple[int, int]]:
+def _path_to_cells(maze: Maze, path: list[str]) -> set[tuple[int, int]]:
     cells: set[tuple[int, int]] = set()
     x, y = maze.entry
     cells.add((x, y))
@@ -25,7 +25,7 @@ def _path_to_cells(maze, path: list[str]) -> set[tuple[int, int]]:
 
 
 def render_maze(
-    maze,
+    maze: Maze,
     theme_idx: int = 0,
     path_cells: set[tuple[int, int]] | None = None,
 ) -> str:
@@ -98,7 +98,7 @@ def render_maze(
 
 
 def run_display(
-    maze,
+    maze: Maze,
     algorithm: str = 'dfs',
     perfect: bool = True,
     path: list[str] | None = None,
