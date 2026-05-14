@@ -1,7 +1,7 @@
 import sys
 from config import ConfigError, parse_config
 from mazegen import Maze, MazeGenerator, solve_maze
-from display.display import run_display
+from graphic.display import run_display
 
 
 #prendo ogni cella la converto in hex e la scrvo nel file, successivamnete alla fine
