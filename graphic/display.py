@@ -2,9 +2,9 @@ import os
 from .themes import COLOR_THEMES, RESET, THEME_NAMES
 
 NORTH = 1
-EAST  = 2
+EAST = 2
 SOUTH = 4
-WEST  = 8
+WEST = 8
 
 
 def _px(r: int, g: int, b: int) -> str:
@@ -31,12 +31,12 @@ def render_maze(
 ) -> str:
     theme_name = THEME_NAMES[theme_idx]
     theme = COLOR_THEMES[theme_name]
-    wall_px   = _px(*theme["bg"])
-    cell_px   = _px(*theme["cell"])
-    entry_px  = _px(*theme["entry"])
-    exit_px   = _px(*theme["exit"])
+    wall_px = _px(*theme["bg"])
+    cell_px = _px(*theme["cell"])
+    entry_px = _px(*theme["entry"])
+    exit_px = _px(*theme["exit"])
     blocked_px = _px(*theme["blocked"])
-    path_px   = _px(*theme["path"])
+    path_px = _px(*theme["path"])
 
     def interior(x: int, y: int) -> str:
         if (x, y) == maze.entry:
@@ -110,7 +110,11 @@ def run_display(
     from mazegen.solver import solve_maze
 
     show_path = False
-    path_cells: set[tuple[int, int]] = _path_to_cells(maze, path) if path else set()
+    path_cells: set[tuple[int, int]] = (
+        _path_to_cells(maze, path)
+        if path
+        else set()
+    )
 
     os.system("clear")
     print(render_maze(maze, theme_idx, path_cells if show_path else None))
@@ -132,18 +136,27 @@ def run_display(
             maze = new_maze
             path_cells = _path_to_cells(maze, path) if path else set()
             os.system("clear")
+            # CAMBIATO FILE DI OUTPUT PER TESTARE LA FUNZIONE DI SCRITTURA,
+            # PRIMA ERA "output.txt" E QUANDO RIGENERAVI IL MAZE NON CAMBIAVA
             from a_maze_ing import write_output
-            write_output(maze, path, "maze.txt")  #CAMBIATO FILE DI OUTPUT PER TESTARE LA FUNZIONE DI SCRITTURA, PRIMA ERA "output.txt" E QUANDO RIGENERAVI IL MAZE NON CAMBIAVA
-            print(render_maze(maze, theme_idx, path_cells if show_path else None))
-
+            write_output(maze, path, "maze.txt")
+            print(render_maze(
+                        maze,
+                        theme_idx,
+                        path_cells if show_path else None
+                    ))
 
         elif choice == "2":
             show_path = not show_path
             os.system("clear")
-            print(render_maze(maze, theme_idx, path_cells if show_path else None))
+            print(render_maze(
+                        maze,
+                        theme_idx,
+                        path_cells if show_path else None
+                    ))
 
         elif choice == "3":
-            print(f"Temi disponibili:")
+            print("Temi disponibili:")
             for idx, name in enumerate(COLOR_THEMES.keys(), start=1):
                 print(f"{idx}. {name}")
             try:
@@ -151,7 +164,11 @@ def run_display(
                 if 1 <= new_theme <= len(COLOR_THEMES):
                     theme_idx = new_theme - 1
                     os.system("clear")
-                    print(render_maze(maze, theme_idx, path_cells if show_path else None))
+                    print(render_maze(
+                        maze,
+                        theme_idx,
+                        path_cells if show_path else None
+                    ))
                 else:
                     print("Indice tema non valido.")
             except ValueError:
