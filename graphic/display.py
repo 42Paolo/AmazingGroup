@@ -1,5 +1,6 @@
 import os
 from .themes import COLOR_THEMES, RESET, THEME_NAMES
+from mazegen.maze import Maze
 
 NORTH = 1
 EAST = 2
@@ -183,7 +184,7 @@ def run_display(
 
 
 if __name__ == "__main__":
-    from mazegen.maze import Maze
+    # from mazegen.maze import Maze
     from mazegen.generator import MazeGenerator
     from mazegen.solver import solve_maze
 

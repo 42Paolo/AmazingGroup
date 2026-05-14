@@ -90,6 +90,7 @@ COLOR_THEMES = {
     },
 }
 
+RED = "\033[91m"
 RESET = "\033[0m"
 
 THEME_NAMES = list(COLOR_THEMES.keys())
