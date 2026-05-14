@@ -1,47 +1,10 @@
 import os
+from .themes import COLOR_THEMES, RESET, THEME_NAMES
 
 NORTH = 1
 EAST  = 2
 SOUTH = 4
 WEST  = 8
-
-#i temi ho cambiato uin minimo i colori e basta
-COLOR_THEMES = [
-    {
-        "bg":      (0,   0,   0),
-        "cell":    (200, 200, 200),
-        "entry":   (180,  0, 180),
-        "exit":    (200,  0,   0),
-        "blocked": (80,  80,  80),
-        "path":    (255, 220,   0),
-    },
-    {
-        "bg":      (10,  10,  30),
-        "cell":    (60,  80, 160),
-        "entry":   (0,  200, 255),
-        "exit":    (255,  60,  60),
-        "blocked": (30,  30,  60),
-        "path":    (0,  255, 160),
-    },
-    {
-        "bg":      (0,   0,   0),
-        "cell":    (0,  160,   0),
-        "entry":   (0,  255, 100),
-        "exit":    (255,  50,  50),
-        "blocked": (0,   50,   0),
-        "path":    (255, 255,   0),
-    },
-    {
-        "bg":      (20,  12,   5),
-        "cell":    (200, 170, 120),
-        "entry":   (120, 200,  80),
-        "exit":    (200,  60,  40),
-        "blocked": (70,  55,  35),
-        "path":    (255, 200,  80),
-    },
-]
-
-RESET = "\033[0m"
 
 
 def _px(r: int, g: int, b: int) -> str:
@@ -66,7 +29,8 @@ def render_maze(
     theme_idx: int = 0,
     path_cells: set[tuple[int, int]] | None = None,
 ) -> str:
-    theme     = COLOR_THEMES[theme_idx]
+    theme_name = THEME_NAMES[theme_idx]
+    theme = COLOR_THEMES[theme_name]
     wall_px   = _px(*theme["bg"])
     cell_px   = _px(*theme["cell"])
     entry_px  = _px(*theme["entry"])
@@ -153,12 +117,12 @@ def run_display(
 
     running = True
     while running:
-        print("\n[1] Rigenera labirinto")
-        print("[2] Mostra/Nascondi percorso")
-        print("[3] Cambia tema colori")
-        print("[4] Esci")
+        print("\n1. Re-generate a new path")
+        print("2. Show/Hide path from entry to exit")
+        print("3. Rotate maze colors")
+        print("4. Quit")
 
-        choice = input("\nScelta: ").strip()
+        choice = input("\nChoice? (1-4): ").strip()
 
         if choice == "1":
             new_maze = Maze(maze.width, maze.height, maze.entry, maze.exit_)
@@ -179,11 +143,13 @@ def run_display(
             print(render_maze(maze, theme_idx, path_cells if show_path else None))
 
         elif choice == "3":
-            print(f"Temi disponibili: 0 - {len(COLOR_THEMES) - 1}")
+            print(f"Temi disponibili:")
+            for idx, name in enumerate(COLOR_THEMES.keys(), start=1):
+                print(f"{idx}. {name}")
             try:
                 new_theme = int(input("Seleziona tema: "))
-                if 0 <= new_theme < len(COLOR_THEMES):
-                    theme_idx = new_theme
+                if 1 <= new_theme <= len(COLOR_THEMES):
+                    theme_idx = new_theme - 1
                     os.system("clear")
                     print(render_maze(maze, theme_idx, path_cells if show_path else None))
                 else:
