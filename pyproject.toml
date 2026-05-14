@@ -6,7 +6,6 @@ description = "Reusable maze generator module"
 requires-python = ">=3.10"
 dependencies = [
     "python-dotenv",
-    "pygame",
     "pydantic"
 ]
 

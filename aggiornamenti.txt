@@ -4,3 +4,10 @@
 - Add Gitignore
 - iniziato maze.py + funzioni utili per il generatore
 - iniziato parsing, da controllare se funziona
+
+
+
+COSE DA FARE:
+- OUTPUT_FILE DEVE ESSERE AGGIORNATO
+- SISTEMARE IL SEED, NON SO SE DEVE PARTIRE DA UN SEED SPECIFICO
+- SISTEMARE CLASSE COLORI

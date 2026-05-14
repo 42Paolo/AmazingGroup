@@ -148,3 +148,6 @@ class MazeGenerator:
                 self.maze.open_wall(x, y, direction)
                 self.maze.open_wall(nx, ny, opposite)
                 num_extra -= 1
+
+
+# VEDO CHE CI SONO PIU' SOLOZIONI MA NON VENGONO MOSTRATE
