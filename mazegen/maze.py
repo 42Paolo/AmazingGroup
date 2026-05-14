@@ -54,6 +54,3 @@ class Maze:
 
 	def get_center(self) -> tuple[int, int]:                                                        
 	  return self.width // 2, self.height // 2  
-	
-
-		
