@@ -1,10 +1,11 @@
 PYTHON=python3
+PIP=pip
 
 
 .PHONY: install run debug clean lint lint-strict
 
 install:
-	pip install -e .
+	$(PIP) install -e .
 
 run:
 	$(PYTHON) a_maze_ing.py config.txt
