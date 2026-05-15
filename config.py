@@ -7,13 +7,7 @@ from pydantic import BaseModel, Field, model_validator
 from graphic import themes
 
 
-# class ConfigError(Exception):
-#     """raises when configuration file is invalid"""
-#     pass
 class ConfigError(Exception):
-    # RED = "\033[91m"
-    # RESET = "\033[0m"
-
     def __str__(self):
         return f"{themes.RED}{super().__str__()}{themes.RESET}"
 
@@ -55,6 +49,10 @@ class MazeConfig(BaseModel):
                 f"ENTRY and EXIT must be different, both are {self.entry}"
             )
 
+        if not self.output_file.endswith("txt"):
+            raise ConfigError(
+                f"OUTPUT_FILE must end with .txt, got {self.output_file}"
+            )
         return self
 
 
@@ -102,7 +100,7 @@ def parse_config(path: str) -> MazeConfig:
             output_file=raw["OUTPUT_FILE"],
             perfect=parse_bool(raw["PERFECT"], "PERFECT"),
             seed=int(raw["SEED"]) if raw.get("SEED") else None,
-            algorithm=raw.get("ALGORITHM"),
+            algorithm=Algorithm(raw["ALGORITHM"].lower()) if raw.get("ALGORITHM") else None
         )
     except ConfigError:
         raise  # rilancia ConfigError senza wrappare
