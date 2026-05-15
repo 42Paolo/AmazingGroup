@@ -89,7 +89,9 @@ def parse_config(path: str) -> MazeConfig:
         try:
             return int(parts[0]), int(parts[1])
         except ValueError:
-            raise ConfigError(f"{key} coordinates must be integers, got {value}")
+            raise ConfigError(
+                f"{key} coordinates must be integers, got {value}"
+            )
 
     try:
         return MazeConfig(
@@ -100,7 +102,10 @@ def parse_config(path: str) -> MazeConfig:
             output_file=raw["OUTPUT_FILE"],
             perfect=parse_bool(raw["PERFECT"], "PERFECT"),
             seed=int(raw["SEED"]) if raw.get("SEED") else None,
-            algorithm=Algorithm(raw["ALGORITHM"].lower()) if raw.get("ALGORITHM") else None
+            algorithm=(
+                Algorithm(raw["ALGORITHM"].lower())
+                if raw.get("ALGORITHM") else None
+            )
         )
     except ConfigError:
         raise

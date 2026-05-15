@@ -1,14 +1,20 @@
 from collections import deque
 from .maze import Maze, DIR_LETTER
 
-#prendo tutte le strade percorribili e le continuo a percorrere una cella alla volta, questo mi permette
-#facendo cio appena una delle strade percorse trovera l'accesso alla stessa cordinata dell'uscita, abbiamo trovato 
-#l'uscita come prima cosa ovviamente, ma secondariamente abbiamo anche per forza di cose il percorso piu veloce, dato
-#che tutte le strade sono state percorse alla stessa velocita, spero capisci, senno ci si becca in call e te lo spiego
-#mi sono fatto aiutare un po' da claude perche prima, le salvavo tutte, e successivamente facevo un controllo sulla lunghezza 
-#del set di dati e quello piu corto lo returnavo, era abbastanza sporco come passaggi e in certe casistiche sbagliava, dato che
-#andava a salvare anche i percorsi secondari sbaglaiti e prendeva quelli come giusti, era un po' un casino hahah, pero questa
-#va bene
+# prendo tutte le strade percorribili e le continuo a percorrere una cella
+# alla volta, questo mi permette facendo cio appena una delle strade
+# percorse trovera l'accesso alla stessa cordinata dell'uscita, abbiamo trovato
+# l'uscita come prima cosa ovviamente, ma secondariamente abbiamo anche
+# per forza di cose il percorso piu veloce, dato che tutte le strade sono
+# state percorse alla stessa velocita, spero capisci, senno ci si becca
+# in call e te lo spiego mi sono fatto aiutare un po' da claude perche prima,
+# le salvavo tutte, e successivamente facevo un controllo sulla lunghezza
+# del set di dati e quello piu corto lo returnavo, era abbastanza sporco
+# come passaggi e in certe casistiche sbagliava, dato che andava a salvare
+# anche i percorsi secondari sbaglaiti e prendeva quelli come giusti,
+# era un po' un casino hahah, pero questa va bene
+
+
 def solve_maze(maze: Maze) -> list[str] | None:
     start = maze.entry
     end = maze.exit_
