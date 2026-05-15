@@ -3,7 +3,7 @@
 from typing import Optional
 from enum import Enum
 from typing_extensions import Self
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, model_validator, ValidationError
 from graphic import themes
 
 
@@ -103,6 +103,11 @@ def parse_config(path: str) -> MazeConfig:
             algorithm=Algorithm(raw["ALGORITHM"].lower()) if raw.get("ALGORITHM") else None
         )
     except ConfigError:
-        raise  # rilancia ConfigError senza wrappare
+        raise
+    except ValidationError as e:
+        first = e.errors()[0]
+        field = first["loc"][0]
+        msg = first["msg"]
+        raise ConfigError(f"Configuration error: {field}: {msg}") from e
     except (KeyError, ValueError) as e:
         raise ConfigError(f"Configuration error: {e}") from e
